@@ -199,10 +199,11 @@ template <typename T>
 void LogN<T>::sample(unsigned int nsample, std::vector<T> &sample) const
 {
   sample.clear();
-  double sigma = std::exp(_F);
+  double sigma = std::log(_F);
+  double zeta  = std::log(_mean);
   for(unsigned int i = 0; i < nsample; i++)
   {
-     sample.push_back(gsl_ran_lognormal(_r,_mean,sigma));
+     sample.push_back(gsl_ran_lognormal(_r,zeta,sigma));
   }
   return;
 }
@@ -211,10 +212,11 @@ template <typename T>
 void LogN<T>::sample_indirect(unsigned int nsample, std::vector<T> &U01, std::vector<T> &sample) const
 {
   sample.clear();
-  double sigma = std::exp(_F);
+  double sigma = std::log(_F);
+  double zeta  = std::log(_mean);
   for(unsigned int i = 0; i < nsample; i++)
   {
-    sample.push_back(gsl_cdf_lognormal_Pinv(U01[i],_mean,sigma));
+    sample.push_back(gsl_cdf_lognormal_Pinv(U01[i],zeta,sigma));
   }
   return;
 }
@@ -681,7 +683,6 @@ void DiOr<T>::sample(unsigned int nsample, std::vector<std::vector<T> > &sample)
   double diri[_par.size()];
   for(unsigned int i = 0; i < _par.size(); i++)alpha[i] = 1.L;
 
-  unsigned int ns(0);
   for(unsigned int ns = 0; ns < nsample; ns++)
   {
      gsl_ran_dirichlet(_r,_par.size(),alpha,diri);
