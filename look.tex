@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage{aeguill,aecompl,tikz,pgfplots,geometry}
+\pgfplotsset{compat=newest}
+\begin{document}
+\section{Dirichlet}
+\begin{tikzpicture}
+\begin{axis}[clip=false,
+             title={$\{0.3 \pm 0.3, 0.5 \pm 0.04, 0.2 \pm 0.01\}$},
+             axis lines=none]
+\addplot[mark=none] coordinates{
+(0.707107,-0.408248)
+(0,0.816497)
+(-0.707107,-0.408248)
+(0.707107,-0.408248)};
+\node[below right] at (axis cs:0.707107,-0.408248) {br$_2$};
+\node[above]       at (axis cs:0,0.816497) {br$_3$};
+\node[below left]  at (axis cs:-0.707107,-0.408248) {br$_1$};
+\addplot[mark=x,mark size=3pt] coordinates{(0.,0.)};
+%%%
+\addplot[red, mark = *, only marks, mark size=0.2pt] table[x = x, y = y]    {data.dat};
+\addplot[blue,mark = *, only marks, mark size=0.2pt] table[x = xg, y = yg]  {data.dat};
+\addplot[violet,mark = *, only marks, mark size=0.2pt] table[x = xt, y = yt]{data.dat};
+\addplot[teal,mark=triangle*,mark size=2pt] coordinates{(0.141421,-0.163299)};
+\end{axis}
+\end{tikzpicture}\hfill
+\begin{tikzpicture}
+\begin{axis}[clip=false,
+             title={br$_2$ $\leq$ br$_1$ $\leq$ br$_3$},
+             axis lines=none]
+\addplot[mark=none] coordinates{
+(0.707107,-0.408248)
+(0,0.816497)
+(-0.707107,-0.408248)
+(0.707107,-0.408248)};
+\node[below right] at (axis cs:0.707107,-0.408248) {br$_2$};
+\node[above]       at (axis cs:0,0.816497) {br$_3$};
+\node[below left]  at (axis cs:-0.707107,-0.408248) {br$_1$};
+\addplot[mark=x,mark size=3pt] coordinates{(0.,0.)};
+%%%
+\addplot[red,mark = *, only marks, mark size=0.2pt]  table[x = xu, y = yu]{data.dat};
+\addplot[teal,mark = *, only marks, mark size=0.2pt] table[x = xo, y = yo]{data.dat};
+\end{axis}
+\end{tikzpicture}
+%%%
+\section{Monovariables}
+\subsection{Norm}
+\begin{tikzpicture}
+\begin{axis}[clip=false,
+             title={Norm(5,2)},
+             axis lines*=left,
+             ymin=0,
+             xlabel=$x$,
+             ybar interval]
+\addplot+[hist={data=x,density}] table[x=norm]{data.dat};
+\end{axis}
+\end{tikzpicture}
+\subsection{NorT}
+\begin{tikzpicture}
+\begin{axis}[clip=false,
+             title={NorT(5,2;1.5,10.8)},
+             axis lines*=left,
+             ymin=0,
+             xlabel=$x$,
+             ybar interval]
+\addplot+[hist={data=x,density}] table[x=nort]{data.dat};
+\end{axis}
+\end{tikzpicture}
+\subsection{LogN}
+\begin{tikzpicture}
+\begin{axis}[clip=false,
+             title={LogN(5e7,0.5)},
+             axis lines*=left,
+             ymin=0,
+             xlabel=$\log_{10}(x)$,
+             ybar interval]
+\addplot+[hist={data=x,density}] table[x expr = log10(\thisrow{logn})]{data.dat};
+\end{axis}
+\end{tikzpicture}
+\subsection{LogU}
+\begin{tikzpicture}
+\begin{axis}[clip=false,
+             title={LogU(5e7,8e15)},
+             axis lines*=left,
+             ymin=0,
+             xlabel=$\log_{10}(x)$,
+             ybar interval]
+\addplot+[hist={data=x,density}] table[x expr=log10(\thisrow{logu})]{data.dat};
+\end{axis}
+\end{tikzpicture}
+\subsection{Unif}
+\begin{tikzpicture}
+\begin{axis}[clip=false,
+             title={Unif(5,12)},
+             axis lines*=left,
+             ymin=0,
+             xlabel=$x$,
+             ybar interval]
+\addplot+[hist={data=x,density}] table[x=unif]{data.dat};
+\end{axis}
+\end{tikzpicture}
+\end{document}
