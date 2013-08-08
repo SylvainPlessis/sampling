@@ -1,6 +1,11 @@
 \documentclass{article}
 \usepackage{aeguill,aecompl,tikz,pgfplots,geometry}
+\usepackage[version=3,arrows=pgf-filled]{mhchem}
 \pgfplotsset{compat=newest}
+\newcommand{\dirichlet}[2]{\ensuremath{\mathcal{D}\text{#2}\left(#1\right)}}
+\newcommand{\Diri}[1]{\dirichlet{#1}{iri}}
+\newcommand{\Diun}[1]{\dirichlet{#1}{iun}}
+\newcommand{\LogN}[1]{\ensuremath{\mathcal{L}\text{og}\mathcal{N}\left(#1\right)}}
 \begin{document}
 \section{Dirichlet}
 \begin{tikzpicture}
@@ -98,4 +103,177 @@
 \addplot+[hist={data=x,density}] table[x=unif]{data.dat};
 \end{axis}
 \end{tikzpicture}
+
+\section{A tree}
+
+One reaction:
+\begin{displaymath}
+\renewcommand{\arraystretch}{1.5}
+\ce{CH4+ + e- ->[\LogN{5\,10^{7},0.5}]}\left\{\begin{array}{l}
+                        \ce{->[0-1] CH3 + H} \\
+                        \left\{\begin{array}{l}
+                               \left\{\begin{array}{l}
+                                      \ce{->[0-1] ^1CH2 + H2} \\
+                                      \ce{->[0-1] ^3CH2 + H2} \\
+                                      \end{array}\right.\\
+                               \left\{\begin{array}{l}
+                                      \ce{->[0-1] ^1CH2 + 2 H} \\
+                                      \ce{->[0-1] ^3CH2 + 2 H} \\
+                                      \end{array}\right.
+                               \end{array}\right. \\
+                        \left\{\begin{array}{l}
+                                \ce{->[0-1] CH + H2 + H} \\
+                                \ce{->[0-1] CH + 3 H} \\
+                               \end{array}\right. \\
+                        \ce{->[0-1] C + 2 H2}
+                        \end{array}\right.
+\end{displaymath}
+The full pdf is, using \Diri{1,1} for \Diun{2}
+\[
+\LogN{5\,10^7,0.5} \otimes \Diri{1,1\otimes\Diri{1\otimes\Diun{2},1\otimes\Diun{2}},1\otimes\Diun{2},1}
+\]
+\begin{tikzpicture}
+\matrix{
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr1,y=tr2]{data.dat};
+\end{axis}
+\\
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr1,y=tr3]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr2,y=tr3]{data.dat};
+\end{axis}
+\\
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr1,y=tr4]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr2,y=tr4]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr3,y=tr4]{data.dat};
+\end{axis}
+\\
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr1,y=tr5]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr2,y=tr5]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr3,y=tr5]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr4,y=tr5]{data.dat};
+\end{axis}
+\\
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr1,y=tr6]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr2,y=tr6]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr3,y=tr6]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr4,y=tr6]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr5,y=tr6]{data.dat};
+\end{axis}
+\\
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr1,y=tr7]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr2,y=tr7]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr3,y=tr7]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr4,y=tr7]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr5,y=tr7]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr6,y=tr7]{data.dat};
+\end{axis}
+\\
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr1,y=tr8]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr2,y=tr8]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr3,y=tr8]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr4,y=tr8]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr5,y=tr8]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr6,y=tr8]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[only marks,mark size=0.5pt] table[x=tr7,y=tr8]{data.dat};
+\end{axis}
+\\
+};
+\end{tikzpicture} 
 \end{document}
