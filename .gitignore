@@ -1,1 +1,6 @@
-*.{log,out,pdf,o}
+*.log
+*.out
+*.pdf
+*.aux
+*.o
+*.x
