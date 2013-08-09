@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "sampler.h"
+#include "pdf_distributions.h"
 
 int main()
 {
@@ -22,9 +22,9 @@ int main()
   means.push_back(0.3); sigs.push_back(0.30);
   means.push_back(0.5); sigs.push_back(0.04);
   means.push_back(0.2); sigs.push_back(0.01);
-  min.push_back(0.00); max.push_back(1.00);
-  min.push_back(0.38); max.push_back(0.62);
-  min.push_back(0.17); max.push_back(0.23);
+  min.push_back(0.00);  max.push_back(1.00);
+  min.push_back(0.38);  max.push_back(0.62);
+  min.push_back(0.17);  max.push_back(0.23);
   ord.push_back(2);
   ord.push_back(1);
   ord.push_back(3);
@@ -69,19 +69,27 @@ int main()
   logn.sample(ns,sampleLogn);
   logu.sample(ns,sampleLogu);
 
-  Sampler::DiUn<double> tree1(4),tree2(2),tree3(2),tree4(2),tree5(2);
+  Sampler::DiUT<double> tree1;
+  min.clear();        max.clear();
+  min.push_back(0.2); max.push_back(0.6);
+  min.push_back(0.3); max.push_back(0.9);
+  pars.clear();
+  pars.push_back(min);
+  pars.push_back(max);
+  tree1.set_parameters(pars);
 
-  tree2.set_mother(&tree1,1);
-  tree3.set_mother(&tree1,2);
-  tree4.set_mother(&tree2,0);
-  tree5.set_mother(&tree2,1);
+  Sampler::DiUn<double> tree2(2);
+  Sampler::DiUn<double> tree3(2),tree4(2);
 
-  std::vector<std::vector<double> > reaction;
-  tree1.sample_tree(ns,reaction);
+  tree1.set_daughter(&tree2,0);
+  tree3.set_daughter(&tree4,0);
 
+  std::vector<std::vector<double> > reaction,reaction2;
+  tree3.sample_tree(ns,reaction2);
+  tree2.sample_tree(ns,reaction);
 
   std::ofstream out("data.dat");
-  out << "x y xg yg xt yt xo yo xu yu norm nort unif logn logu tr1 tr2 tr3 tr4 tr5 tr6 tr7 tr8" << std::endl;
+  out << "x y xg yg xt yt xo yo xu yu norm nort unif logn logu tr1 tr2 tr3 xtr ytr" << std::endl;
   for(unsigned int i = 0; i < ns; i++)
   {
     out << -(sampleDiri[0][i]-1./3.)/std::sqrt(2.) + (sampleDiri[1][i]-1./3.)/std::sqrt(2.) << " "
@@ -103,6 +111,8 @@ int main()
     {
         out << reaction[j][i] << " ";
     }
+    out << -(reaction[0][i]-1./3.)/std::sqrt(2.) + (reaction[1][i]-1./3.)/std::sqrt(2.) << " "
+        << -(reaction[0][i]-1./3.)/std::sqrt(6.) - (reaction[1][i]-1./3.)/std::sqrt(6.) + 2.*(reaction[2][i]-1./3.)/std::sqrt(6.) << " ";
     out << std::endl;
   }
   out.close();

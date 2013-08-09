@@ -52,7 +52,7 @@ void DiUT<T>::print(std::ostream &out)
 template <typename T>
 bool DiUT<T>::accept(const double *run) const
 {
-  for(unsigned int i = 0; i < _min.size(); i++)
+  for(unsigned int i = 0; i < this->npars(); i++)
   {
      if(_min[i] > run[i] || _max[i] < run[i])return false;
   }
@@ -75,21 +75,19 @@ void DiUT<T>::sample(unsigned int nsample, std::vector<std::vector<T> > &sample)
 //diut -> troncated diun
   double alpha[_min.size()];
   double diri[_min.size()];
-  for(unsigned int i = 0; i < _min.size(); i++)alpha[i] = 1.L;
+  for(unsigned int i = 0; i < this->npars(); i++)alpha[i] = 1.L;
 
   unsigned int ns(0);
   while(ns != nsample)
   {
-     gsl_ran_dirichlet(this->_r,_min.size(),alpha,diri);
+     gsl_ran_dirichlet(this->_r,this->npars(),alpha,diri);
      if(!accept(diri))continue;
      ns++;
-     std::vector<T> diriv;
      for(unsigned int j = 0; j < this->npars(); j++)
      {
        sample[j].push_back(diri[j]);
      }
   }
-
   return;
 }
 

@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{aeguill,aecompl,tikz,pgfplots,geometry}
+\usetikzlibrary{trees}
 \usepackage[version=3,arrows=pgf-filled]{mhchem}
 \pgfplotsset{compat=newest}
 \newcommand{\dirichlet}[2]{\ensuremath{\mathcal{D}\text{#2}\left(#1\right)}}
@@ -105,6 +106,39 @@
 \end{tikzpicture}
 
 \section{A tree}
+
+A simple tree:
+\begin{displaymath}
+\renewcommand{\arraystretch}{1.5}
+\ce{R ->}\left\{\begin{array}{l}
+                \ce{->[0.2-0.6]}\left\{\begin{array}{l}
+                  \ce{->[0-1] P1} \\
+                  \ce{->[0-1] P2} 
+                  \end{array}\right.\\
+                 \ce{->[0.3-0.9] P3} 
+                \end{array}\right.
+\end{displaymath}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[clip=false,
+             axis lines=none]
+\addplot[mark=none] coordinates{
+(0.707107,-0.408248)
+(0,0.816497)
+(-0.707107,-0.408248)
+(0.707107,-0.408248)};
+\node[below right] at (axis cs:0.707107,-0.408248)  {P$_2$};
+\node[above]       at (axis cs:0,0.816497)          {P$_3$};
+\node[below left]  at (axis cs:-0.707107,-0.408248) {P$_1$};
+\addplot[mark=x,mark size=3pt] coordinates{(0.,0.)};
+%%%
+\addplot[violet,mark = *, only marks, mark size=0.2pt] table[x = xtr, y = ytr]{data.dat};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\end{document}
 
 One reaction:
 \begin{displaymath}
