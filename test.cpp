@@ -50,11 +50,11 @@ int main()
   std::vector<std::vector<double> > sampleDiut;
   std::vector<std::vector<double> > sampleDior;
   std::vector<std::vector<double> > sampleDiun;
-  std::vector<double> sampleNorm;
-  std::vector<double> sampleNort;
-  std::vector<double> sampleLogn;
-  std::vector<double> sampleLogu;
-  std::vector<double> sampleUnif;
+  std::vector<double> sampleNorm,sampleNormLHS;
+  std::vector<double> sampleNort,sampleNortLHS;
+  std::vector<double> sampleLogn,sampleLognLHS;
+  std::vector<double> sampleLogu,sampleLoguLHS;
+  std::vector<double> sampleUnif,sampleUnifLHS;
 
   unsigned int ns(1000);
 
@@ -68,6 +68,11 @@ int main()
   unif.sample(ns,sampleUnif);
   logn.sample(ns,sampleLogn);
   logu.sample(ns,sampleLogu);
+  norm.sample_indirect(ns,sampleNormLHS);
+  nort.sample_indirect(ns,sampleNortLHS);
+  unif.sample_indirect(ns,sampleUnifLHS);
+  logn.sample_indirect(ns,sampleLognLHS);
+  logu.sample_indirect(ns,sampleLoguLHS);
 
   Sampler::DiUT<double> tree1;
   min.clear();        max.clear();
@@ -85,11 +90,13 @@ int main()
   tree3.set_daughter(&tree4,0);
 
   std::vector<std::vector<double> > reaction,reaction2;
-  tree3.sample_tree(ns,reaction2);
+
   tree2.sample_tree(ns,reaction);
 
+  tree3.sample_tree(ns,reaction2);
+
   std::ofstream out("data.dat");
-  out << "x y xg yg xt yt xo yo xu yu norm nort unif logn logu tr1 tr2 tr3 xtr ytr" << std::endl;
+  out << "x y xg yg xt yt xo yo xu yu norm nort unif logn logu normlhs nortlhs uniflhs lognlhs logulhs tr1 tr2 tr3 xtr ytr trd1 trd2 trd3 xtrd ytrd" << std::endl;
   for(unsigned int i = 0; i < ns; i++)
   {
     out << -(sampleDiri[0][i]-1./3.)/std::sqrt(2.) + (sampleDiri[1][i]-1./3.)/std::sqrt(2.) << " "
@@ -102,17 +109,23 @@ int main()
         << -(sampleDior[0][i]-1./3.)/std::sqrt(6.) - (sampleDior[1][i]-1./3.)/std::sqrt(6.) + 2.*(sampleDior[2][i]-1./3.)/std::sqrt(6.) << " ";
     out << -(sampleDiun[0][i]-1./3.)/std::sqrt(2.) + (sampleDiun[1][i]-1./3.)/std::sqrt(2.) << " "
         << -(sampleDiun[0][i]-1./3.)/std::sqrt(6.) - (sampleDiun[1][i]-1./3.)/std::sqrt(6.) + 2.*(sampleDiun[2][i]-1./3.)/std::sqrt(6.) << " ";
-    out << sampleNorm[i] << " "
-        << sampleNort[i] << " "
-        << sampleUnif[i] << " "
-        << sampleLogn[i] << " "
-        << sampleLogu[i] << " ";
+    out << sampleNorm[i] << " " << sampleNormLHS[i] << " "
+        << sampleNort[i] << " " << sampleNortLHS[i] << " "
+        << sampleUnif[i] << " " << sampleUnifLHS[i] << " "
+        << sampleLogn[i] << " " << sampleLognLHS[i] << " "
+        << sampleLogu[i] << " " << sampleLoguLHS[i] << " ";
     for(unsigned int j = 0; j < reaction.size(); j++)
     {
         out << reaction[j][i] << " ";
     }
     out << -(reaction[0][i]-1./3.)/std::sqrt(2.) + (reaction[1][i]-1./3.)/std::sqrt(2.) << " "
         << -(reaction[0][i]-1./3.)/std::sqrt(6.) - (reaction[1][i]-1./3.)/std::sqrt(6.) + 2.*(reaction[2][i]-1./3.)/std::sqrt(6.) << " ";
+    for(unsigned int j = 0; j < reaction2.size(); j++)
+    {
+        out << reaction2[j][i] << " ";
+    }
+    out << -(reaction2[0][i]-1./3.)/std::sqrt(2.) + (reaction2[1][i]-1./3.)/std::sqrt(2.) << " "
+        << -(reaction2[0][i]-1./3.)/std::sqrt(6.) - (reaction2[1][i]-1./3.)/std::sqrt(6.) + 2.*(reaction2[2][i]-1./3.)/std::sqrt(6.) << " ";
     out << std::endl;
   }
   out.close();

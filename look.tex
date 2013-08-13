@@ -117,6 +117,14 @@ A simple tree:
                   \end{array}\right.\\
                  \ce{->[0.3-0.9] P3} 
                 \end{array}\right.
+\qquad
+\ce{R ->}\left\{\begin{array}{l}
+                \ce{->[0-1]}\left\{\begin{array}{l}
+                  \ce{->[0-1] P1} \\
+                  \ce{->[0-1] P2} 
+                  \end{array}\right.\\
+                 \ce{->[0-1] P3} 
+                \end{array}\right.
 \end{displaymath}
 
 \begin{center}
@@ -133,11 +141,55 @@ A simple tree:
 \node[below left]  at (axis cs:-0.707107,-0.408248) {P$_1$};
 \addplot[mark=x,mark size=3pt] coordinates{(0.,0.)};
 %%%
-\addplot[violet,mark = *, only marks, mark size=0.2pt] table[x = xtr, y = ytr]{data.dat};
+\addplot[blue,mark = *, only marks, mark size=0.2pt] table[x = xtr, y = ytr]{data.dat};
+\addplot[mark=none,red,dashed] coordinates{(0.141421,0.571548) (-0.141421,0.571548)};
+\addplot[mark=none,red,dashed] coordinates{(0.424264,0.0816497) (-0.424264,0.0816497)};
+\node[left] at (axis cs:-0.141421,0.571548)  {$(0.0,0.2,0.8)$};
+\node[right] at (axis cs:0.141421,0.571548)  {$(0.2,0.0,0.8)$};
+\node[left] at (axis cs:-0.424264,0.0816497) {$(0.0,0.6,0.4)$};
+\node[right] at (axis cs:0.424264,0.0816497) {$(0.6,0.0,0.4)$};
+\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{axis}[clip=false,
+             axis lines=none]
+\addplot[mark=none] coordinates{
+(0.707107,-0.408248)
+(0,0.816497)
+(-0.707107,-0.408248)
+(0.707107,-0.408248)};
+\node[below right] at (axis cs:0.707107,-0.408248)  {P$_2$};
+\node[above]       at (axis cs:0,0.816497)          {P$_3$};
+\node[below left]  at (axis cs:-0.707107,-0.408248) {P$_1$};
+\addplot[mark=x,mark size=3pt] coordinates{(0.,0.)};
+%%%
+\addplot[blue,mark = *, only marks, mark size=0.2pt] table[x = xtrd, y = ytrd]{data.dat};
 \end{axis}
 \end{tikzpicture}
 \end{center}
 
+\begin{tikzpicture}
+\matrix{
+\begin{axis}[width=5cm,
+                ]
+\addplot[red,only marks,mark size=0.2pt] table[x=trd1,y=trd2]{data.dat};
+\addplot[blue,only marks,mark size=0.2pt] table[x=tr1,y=tr2]{data.dat};
+\end{axis}
+\\
+\begin{axis}[width=5cm,
+                ]
+\addplot[red,only marks,mark size=0.2pt] table[x=trd1,y=trd3]{data.dat};
+\addplot[blue,only marks,mark size=0.2pt] table[x=tr1,y=tr3]{data.dat};
+\end{axis}
+&
+\begin{axis}[width=5cm,
+                ]
+\addplot[red,only marks,mark size=0.2pt] table[x=trd2,y=trd3]{data.dat};
+\addplot[blue,only marks,mark size=0.2pt] table[x=tr2,y=tr3]{data.dat};
+\end{axis}
+\\
+};
+\end{tikzpicture}
 \end{document}
 
 One reaction:

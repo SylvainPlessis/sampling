@@ -15,6 +15,8 @@
 namespace Sampler
 {
 
+bool SEEDED(false);
+
 template<typename Scalar = double>
 class Distribution
 {
@@ -28,6 +30,9 @@ class Distribution
 
     virtual void sample(unsigned int nsample, std::vector<Scalar> &sample)              const {return;}
     virtual void sample(unsigned int nsample, std::vector<std::vector<Scalar> >&sample) const {return;}
+
+    void sample_LHS(unsigned int nsample, std::vector<std::vector<Scalar> > &sample) const;
+    void sample_LHS(unsigned int nsample, std::vector<Scalar> &sample) const;
 
     virtual void sample_indirect(unsigned int nsample, std::vector<Scalar> &U01, std::vector<Scalar> &sample) const {return;}
     virtual void sample_indirect(unsigned int nsample, std::vector<std::vector<Scalar> > &U01, 
@@ -68,8 +73,12 @@ Distribution<Scalar>::Distribution(const gsl_rng_type * rT):
 _T(rT),
 _mother(NULL)
 {
+  if(!SEEDED)srand(time(NULL));
+  SEEDED = true;
   gsl_rng_env_setup();
   _r = gsl_rng_alloc(_T);
+  unsigned long int seed = rand();
+  gsl_rng_set(_r,seed);
 }
 
 template<typename Scalar>
