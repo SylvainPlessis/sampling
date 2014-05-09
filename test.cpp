@@ -7,6 +7,7 @@
 int main()
 {
   Sampler::DirG<double> dirg;
+  Sampler::DirW<double> dirw;
   Sampler::Diri<double> diri;
   Sampler::DiUT<double> diut;
   Sampler::DiOr<double> dior;
@@ -34,6 +35,7 @@ int main()
   pars.push_back(sigs);
 
   dirg.set_parameters(pars);
+  dirw.set_parameters(pars);
   diri.set_parameters(pars);
 
   pars.clear();
@@ -46,6 +48,7 @@ int main()
   diun.set_parameters(means.size());
 
   std::vector<std::vector<double> > sampleDiri;
+  std::vector<std::vector<double> > sampleDirw;
   std::vector<std::vector<double> > sampleDirg;
   std::vector<std::vector<double> > sampleDiut;
   std::vector<std::vector<double> > sampleDior;
@@ -60,6 +63,7 @@ int main()
 
   diri.sample(ns,sampleDiri);
   dirg.sample(ns,sampleDirg);
+  dirg.sample(ns,sampleDirw);
   diut.sample(ns,sampleDiut);
   dior.sample(ns,sampleDior);
   diun.sample(ns,sampleDiun);
@@ -96,11 +100,13 @@ int main()
   tree3.sample_tree(ns,reaction2);
 
   std::ofstream out("data.dat");
-  out << "x y xg yg xt yt xo yo xu yu norm nort unif logn logu normlhs nortlhs uniflhs lognlhs logulhs tr1 tr2 tr3 xtr ytr trd1 trd2 trd3 xtrd ytrd" << std::endl;
+  out << "x y xw yw xg yg xt yt xo yo xu yu norm nort unif logn logu normlhs nortlhs uniflhs lognlhs logulhs tr1 tr2 tr3 xtr ytr trd1 trd2 trd3 xtrd ytrd" << std::endl;
   for(unsigned int i = 0; i < ns; i++)
   {
     out << -(sampleDiri[0][i]-1./3.)/std::sqrt(2.) + (sampleDiri[1][i]-1./3.)/std::sqrt(2.) << " "
         << -(sampleDiri[0][i]-1./3.)/std::sqrt(6.) - (sampleDiri[1][i]-1./3.)/std::sqrt(6.) + 2.*(sampleDiri[2][i]-1./3.)/std::sqrt(6.) << " ";
+    out << -(sampleDirw[0][i]-1./3.)/std::sqrt(2.) + (sampleDirw[1][i]-1./3.)/std::sqrt(2.) << " "
+        << -(sampleDirw[0][i]-1./3.)/std::sqrt(6.) - (sampleDirw[1][i]-1./3.)/std::sqrt(6.) + 2.*(sampleDirw[2][i]-1./3.)/std::sqrt(6.) << " ";
     out << -(sampleDirg[0][i]-1./3.)/std::sqrt(2.) + (sampleDirg[1][i]-1./3.)/std::sqrt(2.) << " "
         << -(sampleDirg[0][i]-1./3.)/std::sqrt(6.) - (sampleDirg[1][i]-1./3.)/std::sqrt(6.) + 2.*(sampleDirg[2][i]-1./3.)/std::sqrt(6.) << " ";
     out << -(sampleDiut[0][i]-1./3.)/std::sqrt(2.) + (sampleDiut[1][i]-1./3.)/std::sqrt(2.) << " "
